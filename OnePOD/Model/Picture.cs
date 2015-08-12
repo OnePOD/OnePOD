@@ -11,13 +11,32 @@ namespace OnePOD.Model
 {
     class Picture : INotifyPropertyChanged
     {
+        private Uri _uri;
+        public string Uri       // file remote uri
+        {
+            get 
+            {
+                if (_uri == null)
+                    return null;
+                return _uri.ToString(); 
+            }
+            set
+            { 
+                _uri = new Uri(value);
+                SourceDomain = _uri.Host;
+                string[] segments = _uri.Segments;
+                FileName = segments[segments.Length - 1];
+            }
+        }
+
+        public string SourceDomain; // domain name of the source website
+        public string DateShort; // e.g. 20150812
+        
         private FileInfo fileInfo; 
-        private Uri uri;
         private ImageSource imageSource;
 
-        public string Name;      // file name
-        public string Directory; // file local path
-        public string Uri;       // file remote uri
+        public string FileName;      // file name
+        public string FilePath; // file local path
 
         private string _date;
         public string Date
@@ -26,6 +45,11 @@ namespace OnePOD.Model
             set
             {
                 _date = value;
+                DateTime date;
+                if (DateTime.TryParse(_date, out date))
+                {
+                    DateShort = PodUtil.GetDateShort(date);
+                }
                 OnPropertyChanged("Date");
             }
         }

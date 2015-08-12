@@ -21,44 +21,43 @@ namespace OnePOD
         internal string DefaultPortalUrl = "";
 
         // local
-        private string podFolder = "";
         private string podTempFolder = "";
         private string podPagePath = "";
         //private string podPicOnePath = "";
-        internal string PodPicPath = "";
+        //internal string PodPicPath = "";
 
         public PodModel()
         {
-            CurrentPicture = new Picture();
+            PodUtil.GenerateBuild();
             DefaultPortalUrl = @"http://photography.nationalgeographic.com/photography/photo-of-the-day/";
 
             string docFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            podFolder = docFolder + @"\OnePOD";
+            string podFolder = docFolder + @"\OnePOD";
             PodUtil.CreateDirIfNotAvailable(podFolder);
             podTempFolder = podFolder + @"\temp";
             PodUtil.CreateDirIfNotAvailable(podTempFolder);
-
             podPagePath = podTempFolder + @"\current.pod";
+            CurrentPicture = new Picture();
             AcquireInfoFromLocalPage();
 
             //podPicOnePath = podTempFolder + @"\one.png";
             //PodUtil.CreateEmptyFileIfNotAvailable(podPicOnePath);
             //PodUtil.DownloadPicIfNotAvailable(PodPicOnePath);
             
-            PodPicPath = Properties.Settings.Default.LastPodPicPath;
+            //PodPicPath = Properties.Settings.Default.LastPodPicPath;
 
             // clean temp folder
             DirectoryInfo tempDir = new DirectoryInfo(podTempFolder);
             List<FileInfo> filesToBeDeleted = new List<FileInfo>();
             foreach (FileInfo f in tempDir.EnumerateFiles())
             {
-                if (f.FullName == PodPicPath)
-                    continue;
+                //if (f.FullName == PodPicPath)
+                //    continue;
                 string s = Path.GetFileNameWithoutExtension(f.FullName);
                 try
                 {
                     Guid guid = new Guid(s);
-                    // if conversion is successful, then delete the file
+                    // if conversion is successful, then delete the temp file
                     filesToBeDeleted.Add(f);
                 }
                 catch (Exception e)
@@ -70,17 +69,63 @@ namespace OnePOD
                 f.Delete();
         }
 
-        internal string GenerateNewPodPicPath()
+        internal string GetPodPicPath()
         {
-            string s = Guid.NewGuid().ToString();
-            PodPicPath = podTempFolder + "\\" + s + ".jpg";
-            Properties.Settings.Default.LastPodPicPath = PodPicPath;
-            Properties.Settings.Default.Save();
-            return PodPicPath;
+            StringBuilder sb = new StringBuilder();
+            sb.Append(CurrentPicture.SourceDomain+"-");
+            sb.Append(CurrentPicture.DateShort+"-");
+            sb.Append(CurrentPicture.FileName);
+            string s = podTempFolder + "\\" + sb.ToString();
+            CurrentPicture.FilePath = s;
+            return s;
+        }
+
+        //internal string GenerateNewPodPicPath()
+        //{
+        //    //string s = Guid.NewGuid().ToString();
+        //    //PodPicPath = podTempFolder + "\\" + s + ".jpg";
+        //    //Properties.Settings.Default.LastPodPicPath = PodPicPath;
+        //    //Properties.Settings.Default.Save();
+        //    //return PodPicPath;
+        //}
+
+        internal void GetPortalPage()
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(DefaultPortalUrl);
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream responseStream = null;
+            FileStream fileStream = null;
+            try
+            {
+                responseStream = response.GetResponseStream();
+                long fileSize = response.ContentLength;
+                fileStream = new FileStream(podPagePath, FileMode.OpenOrCreate, FileAccess.Write);
+                int length = 1024;
+                byte[] buffer = new byte[1025];
+                int bytesRead = 0;
+                while ((bytesRead = responseStream.Read(buffer, 0, length)) > 0)
+                {
+                    fileStream.Write(buffer, 0, bytesRead);
+                }
+            }
+            catch (Exception e)
+            {
+                PodUtil.Error(e.Message);
+            }
+            finally
+            {
+                if (responseStream != null)
+                    responseStream.Close();
+                if (fileStream != null)
+                    fileStream.Close();
+            }
+            previousPicture = CurrentPicture;
+            CurrentPicture = new Picture();
+            AcquireInfoFromLocalPage();
         }
 
         private bool _infoAcquired = false;
-        public void AcquireInfoFromLocalPage()
+        internal void AcquireInfoFromLocalPage()
         {
             if (!File.Exists(podPagePath))
             {   // just show empty pic
@@ -156,41 +201,6 @@ namespace OnePOD
             }
             GetPicUrl(false);
             _infoAcquired = true;
-        }
-
-        internal void GetPortalPage()
-        {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(DefaultPortalUrl);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream responseStream = null;
-            FileStream fileStream = null;
-            try
-            {
-                responseStream = response.GetResponseStream();
-                long fileSize = response.ContentLength;
-                fileStream = new FileStream(podPagePath, FileMode.OpenOrCreate, FileAccess.Write);
-                int length = 1024;
-                byte[] buffer = new byte[1025];
-                int bytesRead = 0;
-                while ((bytesRead = responseStream.Read(buffer, 0, length)) > 0)
-                {
-                    fileStream.Write(buffer, 0, bytesRead);
-                }
-            }
-            catch (Exception e)
-            {
-                PodUtil.Error(e.Message);
-            }
-            finally
-            {
-                if (responseStream != null)
-                    responseStream.Close();
-                if (fileStream != null)
-                    fileStream.Close();
-            }
-            previousPicture = CurrentPicture;
-            CurrentPicture = new Picture();
-            AcquireInfoFromLocalPage();
         }
 
         internal string GetPicUrl(bool forceError)

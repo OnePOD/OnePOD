@@ -49,19 +49,23 @@ namespace OnePOD
             //mainWindow.PodImage.Source = model.PodPicOnePath; // release the handle on the pic file
             model.GetPortalPage();
             string url = model.GetPicUrl(true);
-            string filePath = model.GenerateNewPodPicPath();
-            using (WebClient myWebClient = new WebClient())
+            string filePath = model.GetPodPicPath();
+            if (!File.Exists(filePath))
             {
-                myWebClient.DownloadFile(url, filePath);
+                using (WebClient myWebClient = new WebClient())
+                {
+                    myWebClient.DownloadFile(url, filePath);
+                }
             }
             showPictureLocal();
         }
 
         internal void showPictureLocal()
         {
-            if (File.Exists(model.PodPicPath))
+            string filePath = model.GetPodPicPath();
+            if (File.Exists(model.CurrentPicture.FilePath))
             {
-                Uri imagePath = new Uri(model.PodPicPath);
+                Uri imagePath = new Uri(filePath);
                 BitmapImage bitmapImage = null;
                 try
                 {
@@ -80,7 +84,7 @@ namespace OnePOD
 
         internal void SetPictureToday()
         {
-            PodInterop.SetImage(model.PodPicPath);
+            PodInterop.SetImage(model.CurrentPicture.FilePath);
         }
 
         internal void OpenOnWeb()
@@ -94,7 +98,7 @@ namespace OnePOD
             string title = PodUtil.POD_TITLE;
             MessageBox.Show(
                 title + ": ~ The One Pic Of Day app to rule them all ~\n" +
-                "Version: " + PodUtil.POD_VERSION + "\n" +
+                "Version: " + PodUtil.POD_VERSION + PodUtil.POD_BUILD + "\n" +
                 "Contact: " + PodUtil.POD_CONTACT,
                 title);
         }

@@ -11,8 +11,26 @@ namespace OnePOD
     class PodUtil
     {
         public static string POD_TITLE = "OnePOD";
-        public static string POD_VERSION = "beta150811";
+        public static string POD_VERSION = "v0.5";
+        public static string POD_BUILD = "";
         public static string POD_CONTACT = "click OnePod.me, or email onepod@onepod.me";
+
+        public static void GenerateBuild()
+        {
+            string build = GetDateShort(DateTime.Now);
+            POD_BUILD = "-beta." + build;
+        }
+
+        public static string GetDateShort(DateTime date)
+        {
+            string s = "";
+            s += date.Year;
+            if (date.Month < 10) s += "0";
+            s += date.Month;
+            if (date.Day < 10) s += "0";
+            s += date.Day;
+            return s;
+        }
 
         public static void Error(string errMsg)
         {

@@ -1,15 +1,54 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnePOD", "OnePOD\OnePOD.csproj", "{E2CA9660-E9DA-4F4D-A5E9-73760A22D72A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{2C4453AE-3E7D-4D5C-9F71-4B30F99E0F52}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "page", "page", "{BC89CA56-4CDC-4080-81CE-B4DCB19A83E2}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\..\..\..\gitRep\page\onepod.github.io\index.html = ..\..\..\..\..\..\gitRep\page\onepod.github.io\index.html
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "onepod.github.io", "http://localhost:6985", "{5387084F-58C5-43B1-9020-732DC2007017}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "true"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_6985"
+		Debug.AspNetCompiler.PhysicalPath = "..\onepod.github.io\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_6985\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_6985"
+		Release.AspNetCompiler.PhysicalPath = "..\onepod.github.io\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_6985\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "..\onepod.github.io\"
+	EndProjectSection
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "OnePOD", "http://localhost:6993", "{C6374C96-EF83-4CD6-8289-186DB98E3434}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "true"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_6993"
+		Debug.AspNetCompiler.PhysicalPath = "..\OnePOD\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_6993\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_6993"
+		Release.AspNetCompiler.PhysicalPath = "..\OnePOD\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_6993\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "..\OnePOD\"
 	EndProjectSection
 EndProject
 Global
@@ -26,8 +65,20 @@ Global
 		{2C4453AE-3E7D-4D5C-9F71-4B30F99E0F52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C4453AE-3E7D-4D5C-9F71-4B30F99E0F52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C4453AE-3E7D-4D5C-9F71-4B30F99E0F52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5387084F-58C5-43B1-9020-732DC2007017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5387084F-58C5-43B1-9020-732DC2007017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5387084F-58C5-43B1-9020-732DC2007017}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{5387084F-58C5-43B1-9020-732DC2007017}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{C6374C96-EF83-4CD6-8289-186DB98E3434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6374C96-EF83-4CD6-8289-186DB98E3434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6374C96-EF83-4CD6-8289-186DB98E3434}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6374C96-EF83-4CD6-8289-186DB98E3434}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5387084F-58C5-43B1-9020-732DC2007017} = {BC89CA56-4CDC-4080-81CE-B4DCB19A83E2}
+		{C6374C96-EF83-4CD6-8289-186DB98E3434} = {BC89CA56-4CDC-4080-81CE-B4DCB19A83E2}
 	EndGlobalSection
 EndGlobal

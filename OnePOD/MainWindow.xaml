@@ -1,0 +1,30 @@
+﻿<Window x:Class="OnePOD.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pod="clr-namespace:OnePOD"
+        Title="OnePOD" Height="600" Width="800">
+    <DockPanel>
+        <!--
+        <pod:PodMenu DockPanel.Dock="Top" x:Name="menu" />
+        -->
+        <pod:PodToolbar DockPanel.Dock="Top" x:Name="toolbar" />
+        <StatusBar DockPanel.Dock="Bottom" x:Name="statusbar" />
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Margin="10">
+                <TextBlock Text="{Binding Path=Date}" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Path=Title}" FontSize="18" FontWeight="ExtraBlack" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,5" />
+                <TextBlock Text="{Binding Path=Credit}" FontSize="14" FontStyle="Italic" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,5" />
+                <TextBlock Text="{Binding Path=Detail}" FontSize="14" TextWrapping="Wrap" />
+            </StackPanel>
+            <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" Width="3" ResizeBehavior="PreviousAndNext" />
+            <Image Grid.Column="2" x:Name="PodImage" />
+        </Grid>
+    </DockPanel>
+</Window>

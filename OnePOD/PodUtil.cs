@@ -111,7 +111,18 @@ namespace OnePOD
             while(i < ca.Length)
             {
                 char c = ca[i];
-                if (c > 127)
+                if (c == 38 && ca[i+6] == 59) // &raquo;
+                { 
+                    char[] subca = new char[7];
+                    Array.Copy(ca, i, subca, 0, 7);
+                    string subs = new string(subca);
+                    if (subs == "&raquo;")
+                    {
+                        sb.Append(">>");
+                        i = i + 7;
+                    }
+                }
+                else if (c > 127)
                 {
                     if (c == 37413) // combination
                     {

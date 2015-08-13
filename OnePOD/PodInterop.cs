@@ -20,7 +20,7 @@ namespace OnePOD
         private static string WP_S = @"WallpaperStyle";
         private static string WP_T = @"TileWallpaper";
 
-        public static void SetImage(string filePath)
+        public static bool SetImage(string filePath)
         {
             try
             {
@@ -34,9 +34,10 @@ namespace OnePOD
             catch (Exception e)
             {
                 PodUtil.Error(e.Message);
+                return false;
             }
             SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, filePath, SPIF_UPDATEINIFILE);
-            MessageBox.Show("Set wallpaper successful.", "OnePOD");
+            return true;
         }
     }
 }

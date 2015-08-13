@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace OnePOD.Model
 {
-    class Picture : INotifyPropertyChanged
+    public class Picture
     {
         private Uri _uri;
         public string Uri       // file remote uri
@@ -50,7 +50,6 @@ namespace OnePOD.Model
                 {
                     DateShort = PodUtil.GetDateShort(date);
                 }
-                OnPropertyChanged("Date");
             }
         }
 
@@ -61,7 +60,6 @@ namespace OnePOD.Model
             set 
             { 
                 _title = value;
-                OnPropertyChanged("Title");
             } 
         }
 
@@ -72,7 +70,6 @@ namespace OnePOD.Model
             set
             {
                 _credit = value;
-                OnPropertyChanged("Credit");
             }
         }
 
@@ -83,16 +80,7 @@ namespace OnePOD.Model
             set 
             { 
                 _detail = value;
-                OnPropertyChanged("Detail");
             } 
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            { PropertyChanged(this, new PropertyChangedEventArgs(propertyName)); }
-        }
-
     }
 }

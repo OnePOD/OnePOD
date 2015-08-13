@@ -18,10 +18,10 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0" Margin="10">
-                <TextBlock Text="{Binding Path=CurrentPicture.Date}" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center" />
-                <TextBlock Text="{Binding Path=CurrentPicture.Title}" FontSize="18" FontWeight="ExtraBlack" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,5" />
-                <TextBlock Text="{Binding Path=CurrentPicture.Credit}" FontSize="14" FontStyle="Italic" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,5" />
-                <TextBlock Text="{Binding Path=CurrentPicture.Detail}" FontSize="14" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding Path=Date}" FontSize="18" TextWrapping="Wrap" HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Path=Title}" FontSize="18" FontWeight="ExtraBlack" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,5" />
+                <TextBlock Text="{Binding Path=Credit}" FontSize="14" FontStyle="Italic" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,5" />
+                <TextBlock Text="{Binding Path=Detail}" FontSize="14" TextWrapping="Wrap" />
             </StackPanel>
             <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" Width="3" ResizeBehavior="PreviousAndNext" />
             <Image Grid.Column="2" x:Name="PodImage" />

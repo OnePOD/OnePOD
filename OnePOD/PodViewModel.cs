@@ -13,35 +13,53 @@ using OnePOD.Model;
 
 namespace OnePOD
 {
-    class PodViewModel 
+    class PodViewModel : INotifyPropertyChanged
     {
         private MainWindow mainWindow;
         private PodModel model;
-
-        public Picture CurrentPicture
-        {
-            get { return model.CurrentPicture; }
-        }
 
         public PodViewModel(MainWindow mainWindow, PodModel model)
         {
             this.mainWindow = mainWindow;
             this.model = model;
-            showPictureLocal();
+            updateUI();
         }
 
 #region UI properties
-        //private string _date;
-        //public string Date { 
-        //    get { return model.Date; }
-        //    set
-        //    {
-        //        _date = value;
-        //        OnPropertyChanged("Date");
-        //    }
-        //}
-        //public string Title { get { return model.Title; } }
-        //public string Detail { get { return model.Detail; } }
+        public string Date { get { return model.CurrentPicture == null ? "" : model.CurrentPicture.Date; } }
+        public string Title { get { return model.CurrentPicture == null ? "" : model.CurrentPicture.Title; } }
+        public string Credit { get { return model.CurrentPicture == null ? "" : model.CurrentPicture.Credit; } }
+        public string Detail { get { return model.CurrentPicture == null ? "" : model.CurrentPicture.Detail; } }
+        private void updateUI()
+        {
+            OnPropertyChanged("Date");
+            OnPropertyChanged("Title");
+            OnPropertyChanged("Credit");
+            OnPropertyChanged("Detail");
+            showPictureLocal();
+        }
+        internal void showPictureLocal()
+        {
+            string filePath = model.GetPodPicPath();
+            if (File.Exists(filePath))
+            {
+                Uri imagePath = new Uri(filePath);
+                BitmapImage bitmapImage = null;
+                try
+                {
+                    bitmapImage = new BitmapImage(imagePath);
+                }
+                catch (FileNotFoundException e)
+                {
+                }
+                catch (NotSupportedException e)
+                {
+                }
+                if (bitmapImage != null)
+                    mainWindow.PodImage.Source = bitmapImage;
+            }
+        }
+
 #endregion
 
         internal void GetPictureToday()
@@ -57,34 +75,14 @@ namespace OnePOD
                     myWebClient.DownloadFile(url, filePath);
                 }
             }
-            showPictureLocal();
+            updateUI();
         }
 
-        internal void showPictureLocal()
-        {
-            string filePath = model.GetPodPicPath();
-            if (File.Exists(model.CurrentPicture.FilePath))
-            {
-                Uri imagePath = new Uri(filePath);
-                BitmapImage bitmapImage = null;
-                try
-                {
-                    bitmapImage = new BitmapImage(imagePath);
-                }
-                catch (FileNotFoundException e)
-                {
-                }
-                catch (NotSupportedException e)
-                { 
-                }
-                if (bitmapImage != null)
-                    mainWindow.PodImage.Source = bitmapImage;
-            }
-        }
 
         internal void SetPictureToday()
         {
             PodInterop.SetImage(model.CurrentPicture.FilePath);
+            MessageBox.Show("Set wallpaper successful.", "OnePOD");
         }
 
         internal void OpenOnWeb()
@@ -97,11 +95,17 @@ namespace OnePOD
         {
             string title = PodUtil.POD_TITLE;
             MessageBox.Show(
-                title + ": ~ The One Pic Of Day app to rule them all ~\n" +
+                title + ": ~ The One Pic of the Day app to rule them all ~\n" +
                 "Version: " + PodUtil.POD_VERSION + PodUtil.POD_BUILD + "\n" +
                 "Contact: " + PodUtil.POD_CONTACT,
                 title);
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            { PropertyChanged(this, new PropertyChangedEventArgs(propertyName)); }
+        }
     }
 }

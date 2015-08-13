@@ -37,8 +37,7 @@ namespace OnePOD
             podTempFolder = podFolder + @"\temp";
             PodUtil.CreateDirIfNotAvailable(podTempFolder);
             podPagePath = podTempFolder + @"\current.pod";
-            CurrentPicture = new Picture();
-            AcquireInfoFromLocalPage();
+            acquireInfoFromLocalPage();
 
             //podPicOnePath = podTempFolder + @"\one.png";
             //PodUtil.CreateEmptyFileIfNotAvailable(podPicOnePath);
@@ -71,6 +70,8 @@ namespace OnePOD
 
         internal string GetPodPicPath()
         {
+            if (CurrentPicture == null)
+                return "";
             StringBuilder sb = new StringBuilder();
             sb.Append(CurrentPicture.SourceDomain+"-");
             sb.Append(CurrentPicture.DateShort+"-");
@@ -120,18 +121,16 @@ namespace OnePOD
                     fileStream.Close();
             }
             previousPicture = CurrentPicture;
-            CurrentPicture = new Picture();
-            AcquireInfoFromLocalPage();
+            acquireInfoFromLocalPage();
         }
 
-        private bool _infoAcquired = false;
-        internal void AcquireInfoFromLocalPage()
+        private void acquireInfoFromLocalPage()
         {
             if (!File.Exists(podPagePath))
-            {   // just show empty pic
-                _infoAcquired = true;
+            {
                 return;
             }
+            CurrentPicture = new Picture();
             HtmlDocument doc = new HtmlDocument();
             doc.Load(podPagePath);
             HtmlNode node = doc.DocumentNode.SelectSingleNode("descendant::div[attribute::id='caption']");
@@ -140,13 +139,13 @@ namespace OnePOD
                 StringBuilder sb = new StringBuilder();
                 foreach (HtmlNode n in node.ChildNodes)
                 {
-                    Console.WriteLine(n.InnerText); // debug only
+                    // Console.WriteLine(n.InnerText); // for debug only
                     if(PodUtil.IsAllWhiteSpace(n.InnerText))
                         continue;
                     if (n.OriginalName == "br") // n.OriginalName == "#text" || 
                         continue;
-                    if (n.InnerText.Contains("&")) // ???
-                        continue;
+                    //if (n.InnerText.Contains("&")) // ???
+                    //    continue;
                     if(n.OriginalName == "h2") // title
                     {
                         CurrentPicture.Title = n.InnerText;
@@ -200,14 +199,12 @@ namespace OnePOD
                 //}
             }
             GetPicUrl(false);
-            _infoAcquired = true;
         }
 
         internal string GetPicUrl(bool forceError)
         {
             if (string.IsNullOrEmpty(CurrentPicture.Uri))
             {
-                // analyse the portal page file
                 string tempUrl = "";
                 HtmlDocument doc = new HtmlDocument();
                 doc.Load(podPagePath);

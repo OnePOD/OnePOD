@@ -127,9 +127,11 @@ namespace OnePOD
                     if (c == 37413) // combination
                     {
                         char nextc = ca[i + 1];
-                        if      (nextc == 28141) { sb.Append("\"T"); i = i + 2; }
+                        if      (nextc == 28110) { sb.Append("\"A"); i = i + 2; }
+                        else if (nextc == 28141) { sb.Append("\"T"); i = i + 2; }
                         else if (nextc == 28200) { sb.Append("\"w"); i = i + 2; }
                         else if (nextc == 27290) { sb.Append("'s"); i = i + 2; }
+                        else if (nextc == 25857) { sb.Append(" - a"); i = i + 2; }
                         else if (nextc == 25878) { sb.Append(" - t"); i = i + 2; }
                         else if (nextc == 63)
                         {

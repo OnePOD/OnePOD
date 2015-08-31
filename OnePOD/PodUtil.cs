@@ -119,7 +119,7 @@ namespace OnePOD
                     if (subs == "&raquo;")
                     {
                         sb.Append(">>");
-                        i = i + 7;
+                        i += 7;
                     }
                 }
                 else if (c > 127)
@@ -128,23 +128,38 @@ namespace OnePOD
                     {
                         char nextc = ca[i + 1];
                         if      (nextc == 28110) { sb.Append("\"A"); i = i + 2; }
+                        else if (nextc == 28130) { sb.Append("\"M"); i = i + 2; }
+                        else if (nextc == 28135) { sb.Append("\"P"); i = i + 2; }
                         else if (nextc == 28141) { sb.Append("\"T"); i = i + 2; }
+                        else if (nextc == 28146) { sb.Append("\"W"); i = i + 2; }
+                        else if (nextc == 28161) { sb.Append("\"a"); i = i + 2; }
+                        else if (nextc == 28163) { sb.Append("\"c"); i = i + 2; }
+                        else if (nextc == 28167) { sb.Append("\"f"); i = i + 2; }
+                        else if (nextc == 28187) { sb.Append("\"p"); i = i + 2; }
                         else if (nextc == 28200) { sb.Append("\"w"); i = i + 2; }
+                        else if (nextc == 27271) { sb.Append("'d"); i = i + 2; }
                         else if (nextc == 27290) { sb.Append("'s"); i = i + 2; }
+                        else if (nextc == 27293) { sb.Append("'v"); i = i + 2; }
                         else if (nextc == 25857) { sb.Append(" - a"); i = i + 2; }
+                        else if (nextc == 25858) { sb.Append(" - b"); i = i + 2; }
                         else if (nextc == 25878) { sb.Append(" - t"); i = i + 2; }
                         else if (nextc == 63)
                         {
-                            char next2c = ca[i + 2]; char next3c = ca[i + 3]; char next4c = ca[i + 4];
-                            if (next2c == '/' && next3c == 'p' && next4c == '>') // ending tag </p> is ruied
+                            char next2c = ca[i + 2]; char next3c = ca[i + 3]; char next4c = ca[i + 4]; char next5c = ca[i+5];
+                            if (next2c == '/' && next3c == 'p' && next4c == '>') // tag </p> is ruined
                             {
                                 sb.Append("\"");
-                                i = i + 5;
+                                i += 5;
+                            }
+                            else if (next2c == '/' && next3c == 'e' && next4c == 'm' && next5c == '>') // tag </em> is ruined
+                            {
+                                sb.Append("\"");
+                                i += 6;
                             }
                             else
                             {
                                 sb.Append("\" ");
-                                i = i + 2;
+                                i += 2;
                             }
                         }
                         else if (garbledCharMap.ContainsKey(nextc))
@@ -154,7 +169,7 @@ namespace OnePOD
                             //{ // break here for debug
                             //}
                             sb.Append("\"" + gs);
-                            i = i + 2;
+                            i += 2;
                         }
                         else // a new char not in the map
                         {
